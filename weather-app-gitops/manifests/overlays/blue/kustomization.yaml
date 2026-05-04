@@ -8,18 +8,38 @@ resources:
 
 nameSuffix: -blue
 
+commonLabels:
+  slot: blue
+
 patches:
-  - patch: |-
-      - op: replace
-        path: /spec/template/metadata/labels/slot
-        value: blue
-      - op: replace
-        path: /metadata/name
-        value: weather-app-blue
-    target:
+  - target:
       kind: Deployment
       name: weather-app
+    patch: |-
+      - op: replace
+        path: /spec/template/metadata/labels/app
+        value: weather-app-blue
 
-images:
-  - name: ghcr.io/avadhutpatil22/weather-app
-    newTag: "blue-1.0.0"  # stable release — blue slot
+      - op: replace
+        path: /spec/selector/matchLabels/app
+        value: weather-app-blue
+
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: ghcr.io/avadhutpatil22/weather-app:v1
+
+  - target:
+      kind: Service
+      name: weather-app-active
+    patch: |-
+      - op: replace
+        path: /spec/selector/app
+        value: weather-app-blue
+
+  - target:
+      kind: Service
+      name: weather-app-preview
+    patch: |-
+      - op: replace
+        path: /spec/selector/app
+        value: weather-app-blue
