@@ -1,39 +1,34 @@
-const API_KEY = '2e960445e8994eab7b698e7041488dcf';
+const API_KEY = 'a98cb9907bac9c215e70f17c6eafc166';
+const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
 
-async function fetchWeather(city) {
-  clearError();
+async function getWeather() {
+  const city = document.getElementById('city').value;
 
-  if (!city.trim()) {
-    showError('Please enter a city name.');
+  if (!city) {
+    alert('Please enter city name');
     return;
   }
 
-  try {
-    const url = `${BASE_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
+  const response = await fetch(
+    `${BASE_URL}?q=${city}&appid=${API_KEY}&units=metric`
+  );
 
-    const res = await fetch(url);
+  const data = await response.json();
 
-    if (!res.ok) {
-      const errData = await res.json();
-      console.error("API ERROR:", errData);
-
-      if (res.status === 404) showError(`City "${city}" not found.`);
-      else if (res.status === 401) showError(`Invalid API key: ${errData.message}`);
-      else showError(`Error ${res.status}: ${errData.message}`);
-      return;
-    }
-
-    const data = await res.json();
-    lastData = data;
-    renderWeather(data);
-
-  } catch (e) {
-    console.error(e);
-
-    if (!API_KEY || API_KEY === '2e960445e8994eab7b698e7041488dcf') {
-      renderDemo(city);
-    } else {
-      showError('Network error. Check your connection.');
-    }
+  if (data.cod !== 200) {
+    document.getElementById('result').innerHTML = 'City not found';
+    return;
   }
+
+  document.getElementById('result').innerHTML = `
+    <h2>${data.name}</h2>
+    <p>Temperature: ${data.main.temp} °C</p>
+    <p>Weather: ${data.weather[0].description}</p>
+  `;
 }
+
+fetch('/slot')
+  .then(res => res.text())
+  .then(slot => {
+    document.getElementById('slot').innerHTML = `Running Slot: ${slot}`;
+  });
