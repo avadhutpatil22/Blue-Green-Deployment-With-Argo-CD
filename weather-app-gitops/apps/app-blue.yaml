@@ -7,7 +7,7 @@ spec:
   project: weather-project
 
   source:
-    repoURL: https://github.com/YOUR_USERNAME/weather-app-gitops.git
+    repoURL: https://github.com/avadhutpatil22/weather-app-gitops.git
     targetRevision: HEAD
     path: manifests/overlays/blue
 
