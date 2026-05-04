@@ -6,10 +6,10 @@ namespace: weather-app
 resources:
   - ../../base
 
-nameSuffix: -blue
+nameSuffix: -green
 
 commonLabels:
-  slot: blue
+  slot: green
 
 patches:
   - target:
@@ -18,15 +18,15 @@ patches:
     patch: |-
       - op: replace
         path: /spec/template/metadata/labels/app
-        value: weather-app-blue
+        value: weather-app-green
 
       - op: replace
         path: /spec/selector/matchLabels/app
-        value: weather-app-blue
+        value: weather-app-green
 
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: ghcr.io/avadhutpatil22/weather-app:v1
+        value: ghcr.io/avadhutpatil22/weather-app:v2
 
   - target:
       kind: Service
@@ -34,7 +34,7 @@ patches:
     patch: |-
       - op: replace
         path: /spec/selector/app
-        value: weather-app-blue
+        value: weather-app-green
 
   - target:
       kind: Service
@@ -42,4 +42,4 @@ patches:
     patch: |-
       - op: replace
         path: /spec/selector/app
-        value: weather-app-blue
+        value: weather-app-green
