@@ -1,3 +1,4 @@
+```yaml id="3bpvdo"
 name: Build and Push Docker Image
 
 on:
@@ -26,4 +27,10 @@ jobs:
 
       - name: Build Image
         run: |
-          doc
+          docker build \
+          -t ghcr.io/${{ github.repository_owner }}/weather-app:v${{ github.run_number }} .
+
+      - name: Push Image
+        run: |
+          docker push \
+          ghcr.io/${{ github.repository_owner }}/weather-app:v${{ github.run_number }}
