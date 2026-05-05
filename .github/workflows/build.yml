@@ -1,4 +1,3 @@
-```yaml id="3bpvdo"
 name: Build and Push Docker Image
 
 on:
